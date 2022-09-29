@@ -7,7 +7,12 @@ import {
   UseInterceptors,
   UseGuards,
   Request,
+  Res,
+  StreamableFile,
 } from '@nestjs/common';
+import { createReadStream } from 'fs';
+import { Response } from 'express';
+import { join } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -28,6 +33,11 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Post()
+  postHello(): string {
+    return this.appService.createHello();
+  }
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
@@ -44,5 +54,15 @@ export class AppController {
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  @Get('file')
+  getFile(@Res({ passthrough: true }) res: Response): StreamableFile {
+    const file = createReadStream(join(process.cwd(), 'package.json'));
+    res.set({
+      'Content-Type': 'application/json',
+      'Content-Disposition': 'attachment; filename="package.json"',
+    });
+    return new StreamableFile(file);
   }
 }

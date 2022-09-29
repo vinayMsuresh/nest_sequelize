@@ -8,6 +8,7 @@ import Person from './person/person.model';
 import { MulterModule } from '@nestjs/platform-express/multer';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 @Module({
   imports: [
     PersonModule,
@@ -17,6 +18,7 @@ import { UsersModule } from './users/users.module';
     }),
     AuthModule,
     UsersModule,
+    EventEmitterModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
