@@ -6,6 +6,7 @@ import {
   UploadedFile,
   UseInterceptors,
   UseGuards,
+  Session,
   Request,
   Res,
   StreamableFile,
@@ -20,6 +21,7 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import JwtAuthGuard from './auth/jwt-auth.guard';
 import { FileSizeValidationPipe } from './file/validationPipe';
+import { session } from 'passport';
 
 @Controller()
 export class AppController {
@@ -29,7 +31,9 @@ export class AppController {
   ) {}
 
   @Get()
-  getHello(): string {
+  getHello(@Session() session: Record<string, any>): string {
+    session.visits = session.visits ? session.visits + 1 : 1;
+    console.log(session.visits);
     return this.appService.getHello();
   }
 

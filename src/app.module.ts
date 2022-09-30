@@ -9,6 +9,8 @@ import { MulterModule } from '@nestjs/platform-express/multer';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EmailController } from './email.controller';
 @Module({
   imports: [
     PersonModule,
@@ -19,8 +21,17 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     AuthModule,
     UsersModule,
     EventEmitterModule.forRoot(),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.sendgrid.net',
+        auth: {
+          user: 'apikey',
+          pass: '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',
+        },
+      },
+    }),
   ],
-  controllers: [AppController],
+  controllers: [AppController, EmailController],
   providers: [AppService],
 })
 export class AppModule {}
