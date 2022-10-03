@@ -26,7 +26,7 @@ import { EmailController } from './email.controller';
         host: 'smtp.sendgrid.net',
         auth: {
           user: 'apikey',
-          pass: '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',
+          pass: 'SG.voHNB3eeTZupeOx8JPIPOA.dsdsfdsfrgswredfaewfaewdasqadsz',
         },
       },
     }),
